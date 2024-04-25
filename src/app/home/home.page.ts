@@ -1,13 +1,31 @@
 import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton } from '@ionic/angular/standalone';
+import { Geolocation } from '@capacitor/geolocation';
+import { Browser } from '@capacitor/browser';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent],
+  imports: [IonButton, IonHeader, IonToolbar, IonTitle, IonContent],
 })
 export class HomePage {
+  // vars
+  coordinates:any = "";
+  latitude:number = 0;
+  longitude:number = 0;
+
   constructor() {}
+
+  // class functions
+  async getGPS() {
+    this.coordinates = await Geolocation.getCurrentPosition();
+    this.latitude = this.coordinates.coords.latitude;
+    this.longitude = this.coordinates.coords.longitude;
+  }
+
+  openCapacitorSite = async () => {
+    await Browser.open({ url: 'http://capacitorjs.com/' });
+  };
 }
